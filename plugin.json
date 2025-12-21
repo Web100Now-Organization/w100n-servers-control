@@ -1,0 +1,37 @@
+{
+  "id": "w100n_servers_control",
+  "name": "Servers Control & Management",
+  "version": "1.0.0",
+  "description": "Plugin for managing server infrastructure, initial setup, monitoring, and orchestration",
+  "author": "Web100Now",
+  "organization": "web100now",
+  "short_name": "servers_control",
+  "category": "infrastructure",
+  "default_enabled": false,
+  "requires_role": "platform",
+  "write_requires_role": "platform",
+  "sync_fields": ["short_name", "name", "enabled", "config"],
+  "permissions": {
+    "read": ["platform"],
+    "write": ["platform"]
+  },
+  "graphql_schema": "schema.graphqls",
+  "resolvers": "resolvers.go",
+  "endpoints": [
+    {
+      "type": "mutation",
+      "name": "startServerSetup",
+      "description": "Start initial server setup process",
+      "requires_write": true
+    },
+    {
+      "type": "subscription",
+      "name": "serverSetupProgress",
+      "description": "Subscribe to server setup progress updates",
+      "requires_write": false
+    }
+  ],
+  "dependencies": [],
+  "config": {}
+}
+

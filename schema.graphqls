@@ -1,0 +1,48 @@
+extend type Query {
+  testServerConnection(
+    serverIP: String!
+  ): ServerConnectionTestResponse!
+    @pluginAllowed(short_name: "servers_control")
+    @requireRole(role: "platform")
+}
+
+extend type Mutation {
+  startServerSetup(
+    serverIP: String!
+    serverPort: Int!
+    username: String!
+    password: String!
+  ): ServerSetupResponse!
+    @pluginAllowed(short_name: "servers_control")
+    @requireRole(role: "platform")
+}
+
+type ServerConnectionTestResponse {
+  success: Boolean!
+  message: String!
+  hostname: String
+  osInfo: String
+  error: String
+}
+
+type ServerSetupResponse {
+  success: Boolean!
+  message: String!
+  setupId: String
+}
+
+extend type Subscription {
+  serverSetupProgress(setupId: String!): ServerSetupProgress!
+    @pluginAllowed(short_name: "servers_control")
+    @requireRole(role: "platform")
+}
+
+type ServerSetupProgress {
+  step: Int!
+  totalSteps: Int!
+  message: String!
+  status: String!
+  error: String
+  timestamp: Int!
+}
+
