@@ -1,48 +1,47 @@
 extend type Query {
-  testServerConnection(
-    serverIP: String!
-  ): ServerConnectionTestResponse!
+  tasks(
+    agentId: String!
+    limit: Int
+    priority: String
+  ): [Task!]!
     @pluginAllowed(short_name: "servers_control")
     @requireRole(role: "platform")
 }
 
 extend type Mutation {
-  startServerSetup(
-    serverIP: String!
-    serverPort: Int!
-    username: String!
-    password: String!
-  ): ServerSetupResponse!
+fix  submitTaskResult(
+    taskId: String!
+    status: String!
+    output: JSON
+    error: String
+    durationMs: Int
+    executedAt: String! 
+  ): TaskResult!
+    @pluginAllowed(short_name: "servers_control")
+    @requireRole(role: "platform")
+
+  submitSystemState(
+    agentId: String!
+    state: JSON!
+  ): StateResult!
     @pluginAllowed(short_name: "servers_control")
     @requireRole(role: "platform")
 }
 
-type ServerConnectionTestResponse {
+type Task {
+  taskId: String!
+  type: String!
+  payload: JSON!
+  issuedAt: String!
+  expiresAt: String!
+  signature: String!
+}
+
+type TaskResult {
   success: Boolean!
-  message: String!
-  hostname: String
-  osInfo: String
-  error: String
+  taskId: String!
 }
 
-type ServerSetupResponse {
+type StateResult {
   success: Boolean!
-  message: String!
-  setupId: String
 }
-
-extend type Subscription {
-  serverSetupProgress(setupId: String!): ServerSetupProgress!
-    @pluginAllowed(short_name: "servers_control")
-    @requireRole(role: "platform")
-}
-
-type ServerSetupProgress {
-  step: Int!
-  totalSteps: Int!
-  message: String!
-  status: String!
-  error: String
-  timestamp: Int!
-}
-
