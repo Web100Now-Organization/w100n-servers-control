@@ -9,7 +9,7 @@ extend type Query {
 }
 
 extend type Mutation {
-fix  submitTaskResult(
+  submitTaskResult(
     taskId: String!
     status: String!
     output: JSON
